@@ -8,45 +8,51 @@
 <main class="wrap"><div id="days"></div><div class="summary" id="summary"></div><div class="actions"><a class="button" href="planner.html">Plan Another Trip →</a></div></main>
 <script>
 const q=new URLSearchParams(location.search);
-const days=Math.max(3,Math.min(7,Number(q.get('days'))||5));
-const budget=Number(q.get('budget'))||85000;
-const group=q.get('group')||'Friends';
-const interests=(q.get('interests')||'beaches,adventure,shopping').split(',');
+let saved={};
+try{saved=JSON.parse(localStorage.getItem('wayloTrip')||'{}')}catch(e){}
+const daysRaw=q.get('days') ?? saved.days;
+const days=Math.min(7,Math.max(3,Number.parseInt(daysRaw,10)||5));
+const budget=Math.max(50000,Number(q.get('budget')??saved.budget??85000));
+const group=q.get('group')||saved.group||'Friends';
+const interests=String(q.get('interests')??saved.interests??'beaches,adventure,shopping').split(',').filter(Boolean);
 const names={beaches:'Beaches',adventure:'Adventure',shopping:'Shopping',food:'Food',nightlife:'Nightlife',culture:'Culture',photography:'Photography',luxury:'Luxury'};
 const places={
 beaches:[['10:00 AM','JBR Beach','Relax by the coast and enjoy a laid-back beach morning.',500],['5:00 PM','Dubai Marina','Walk the waterfront and enjoy sunset views.',1000]],
-adventure:[['2:00 PM','Desert Safari','Dune bashing, sandboarding and sunset views.',7000],['7:00 PM','Desert Camp Dinner','Traditional dinner and evening entertainment.',3700]],
-shopping:[['11:00 AM','Dubai Mall','Explore shops, attractions and the Dubai Aquarium area.',3000],['4:00 PM','Mall of the Emirates','Shopping and indoor entertainment.',5000]],
-food:[['1:00 PM','Dubai Food Experience','Try a selection of local and international flavours.',2500],['8:00 PM','JBR Dining','A relaxed evening meal by the waterfront.',2500]],
-nightlife:[['8:00 PM','Dubai Marina Evening','Explore the lively waterfront after sunset.',2500],['10:00 PM','JBR Nightlife','Enjoy Dubai’s evening atmosphere.',3500]],
-culture:[['10:00 AM','Al Fahidi Historical District','Explore old Dubai and its historic lanes.',500],['3:00 PM','Dubai Creek & Souks','Take an abra ride and explore traditional markets.',500]],
-photography:[['7:00 AM','Dubai Sunrise','Capture the skyline and early-morning city views.',500],['6:00 PM','Dubai Marina Sunset','Photograph the waterfront skyline at golden hour.',1000]],
+adventure:[['2:00 PM','Desert Safari','Enjoy dune bashing, sandboarding and sunset views.',7000],['7:00 PM','Desert Camp Dinner','Enjoy a traditional dinner and evening entertainment.',3700]],
+shopping:[['11:00 AM','Dubai Mall','Explore shops and attractions in Downtown Dubai.',3000],['4:00 PM','Mall of the Emirates','Shop and enjoy indoor entertainment.',5000]],
+food:[['1:00 PM','Dubai Food Experience','Try a selection of local and international flavours.',2500],['8:00 PM','JBR Dining','Enjoy dinner by the waterfront.',2500]],
+nightlife:[['8:00 PM','Dubai Marina Evening','Explore the lively waterfront after sunset.',2500],['10:00 PM','JBR Evening','Enjoy Dubai’s lively evening atmosphere.',3500]],
+culture:[['10:00 AM','Al Fahidi Historical District','Explore the historic lanes and traditional architecture of Old Dubai.',500],['3:00 PM','Dubai Creek and Souks','Take an abra ride and explore the traditional markets.',500]],
+photography:[['7:00 AM','Dubai Sunrise','Capture the skyline in the early morning light.',500],['6:00 PM','Dubai Marina Sunset','Photograph the waterfront skyline at golden hour.',1000]],
 luxury:[['3:00 PM','Burj Khalifa','Visit the observation deck for panoramic city views.',5500],['7:00 PM','Premium Dinner','Enjoy a special evening dining experience.',6000]]
 };
-const base=[['10:00 AM','Dubai Mall','Explore one of Dubai’s most popular attractions.',0],['1:00 PM','Lunch','Casual lunch around Downtown Dubai.',1500],['3:00 PM','Burj Khalifa','Visit the observation deck and enjoy panoramic views.',5500],['7:00 PM','Dubai Fountain','End the evening around Downtown Dubai.',0]];
+const base=[['10:00 AM','Dubai Mall','Explore one of Dubai’s most popular attractions.',0],['1:00 PM','Lunch in Downtown Dubai','Enjoy a casual lunch near the city centre.',1500],['3:00 PM','Burj Khalifa','Visit the observation deck for panoramic views.',5500],['7:00 PM','Dubai Fountain','Enjoy the evening atmosphere around Downtown Dubai.',0]];
 const selected=interests.filter(x=>places[x]);
-const pool=selected.length?selected.flatMap(x=>places[x]):[base];
-let used=new Set(), html='';
+const pool=selected.length?selected.flatMap(x=>places[x]):base;
+let used=new Set(),html='';
 for(let d=1;d<=days;d++){
  let activities=[];
- if(d===1) activities=base;
- else {
-   for(const item of pool.flat()){
-     if(!used.has(item[1])){activities.push(item);used.add(item[1]);if(activities.length>=3)break;}
+ if(d===1){activities=base;}
+ else{
+   for(const item of pool){
+     if(!used.has(item[1])){activities.push(item);used.add(item[1]);}
+     if(activities.length>=3)break;
+   }
+   if(activities.length<2){
+     for(const item of base){if(!activities.some(a=>a[1]===item[1]))activities.push(item);if(activities.length>=3)break;}
    }
  }
- if(activities.length<2) activities=base.slice(0,3);
- const dayCost=activities.reduce((s,a)=>s+a[3],0);
- html+=`<div class="day"><div class="dayhead"><div><h2>Day ${d} — ${d===1?'Downtown Dubai':(selected[(d-2)%Math.max(selected.length,1)]?names[selected[(d-2)%selected.length]]+' Experience':'Dubai Discovery')}</h2><p>Selected around your ${selected.map(x=>names[x]).slice(0,3).join(', ')} preferences.</p></div><span class="cost">₹${dayCost.toLocaleString('en-IN')}</span></div>`;
- activities.forEach(a=>html+=`<div class="activity"><div class="time">${a[0]}</div><div><h3>${a[1]}</h3><p>${a[2]}</p></div><div class="price">${a[3]?'₹'+a[3].toLocaleString('en-IN'):'Free'}</div></div>`);
+ const dayCost=activities.reduce((sum,a)=>sum+a[3],0);
+ const theme=d===1?'Downtown Dubai':(selected.length?names[selected[(d-2)%selected.length]]+' Experience':'Dubai Discovery');
+ html+=`<div class="day"><div class="dayhead"><div><h2>Day ${d} — ${theme}</h2><p>Planned around your ${selected.map(x=>names[x]).slice(0,3).join(', ')} preferences.</p></div><span class="cost">₹${dayCost.toLocaleString('en-IN')}</span></div>`;
+ activities.forEach(a=>{html+=`<div class="activity"><div class="time">${a[0]}</div><div><h3>${a[1]}</h3><p>${a[2]}</p></div><div class="price">${a[3]?'₹'+a[3].toLocaleString('en-IN'):'Free'}</div></div>`;});
  html+='</div>';
 }
 document.getElementById('days').innerHTML=html;
 const interestText=selected.map(x=>names[x]).join(' • ');
-document.getElementById('title').textContent=`${days} days in Dubai, your way.`;
-document.getElementById('subtitle').textContent=`Designed for ${group.toLowerCase()} who selected ${interestText||'a balanced Dubai experience'} and want recommendations matched to a ₹${budget.toLocaleString('en-IN')} budget.`;
-document.getElementById('stats').innerHTML=`<span class="pill">${group}</span><span class="pill">₹${budget.toLocaleString('en-IN')} Budget</span><span class="pill">${interestText||'Dubai highlights'}</span><span class="pill">${days} Days</span>`;
-const activityTotal=Math.round(days*9000);
-const accommodation=Math.round(budget*.35), food=Math.round(budget*.18), transport=Math.round(budget*.12), activities=Math.round(budget*.22), misc=budget-accommodation-food-transport-activities;
-document.getElementById('summary').innerHTML=`<h2>Estimated trip budget</h2><div class="row"><span>Accommodation</span><strong>₹${accommodation.toLocaleString('en-IN')}</strong></div><div class="row"><span>Food</span><strong>₹${food.toLocaleString('en-IN')}</strong></div><div class="row"><span>Activities</span><strong>₹${activities.toLocaleString('en-IN')}</strong></div><div class="row"><span>Transport</span><strong>₹${transport.toLocaleString('en-IN')}</strong></div><div class="row"><span>Miscellaneous</span><strong>₹${misc.toLocaleString('en-IN')}</strong></div><div class="row total"><span>Planned budget</span><strong>₹${budget.toLocaleString('en-IN')}</strong></div><p style="margin-top:14px;color:#0d786c;font-weight:700">✓ Itinerary adjusted to your selected budget and preferences</p>`;
+document.getElementById('title').textContent=`${days}-day Dubai trip, planned your way.`;
+document.getElementById('subtitle').textContent=`Designed for ${group.toLowerCase()} with interests in ${interestText||'Dubai highlights'}, within a budget of ₹${budget.toLocaleString('en-IN')}.`;
+document.getElementById('stats').innerHTML=`<span class="pill">${group}</span><span class="pill">₹${budget.toLocaleString('en-IN')} Budget</span><span class="pill">${interestText||'Dubai Highlights'}</span><span class="pill">${days} Days</span>`;
+const accommodation=Math.round(budget*.35),food=Math.round(budget*.18),transport=Math.round(budget*.12),activities=Math.round(budget*.22),misc=budget-accommodation-food-transport-activities;
+document.getElementById('summary').innerHTML=`<h2>Estimated Trip Budget</h2><div class="row"><span>Accommodation</span><strong>₹${accommodation.toLocaleString('en-IN')}</strong></div><div class="row"><span>Food</span><strong>₹${food.toLocaleString('en-IN')}</strong></div><div class="row"><span>Activities</span><strong>₹${activities.toLocaleString('en-IN')}</strong></div><div class="row"><span>Transport</span><strong>₹${transport.toLocaleString('en-IN')}</strong></div><div class="row"><span>Miscellaneous</span><strong>₹${misc.toLocaleString('en-IN')}</strong></div><div class="row total"><span>Planned Budget</span><strong>₹${budget.toLocaleString('en-IN')}</strong></div><p style="margin-top:14px;color:#0d786c;font-weight:700">✓ Itinerary adjusted to your selected budget and preferences</p>`;
 </script></body></html>
