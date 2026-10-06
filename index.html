@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TripAI - Your Dubai Trip, Planned Around You</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b0f19;
+            color: white;
+        }
+
+        /* Navigation */
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: rgba(11, 15, 25, 0.95);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 650px;
+            display: flex;
+            align-items: center;
+            padding: 80px 7%;
+            background:
+                linear-gradient(rgba(5, 8, 15, 0.55), rgba(5, 8, 15, 0.9)),
+                url("https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2000&q=80");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #d4af37;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #dddddd;
+            margin-bottom: 35px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #d4af37;
+            color: #111;
+            padding: 16px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background: #f0cf62;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 7%;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            color: #aaa;
+            margin-bottom: 45px;
+        }
+
+        .feature-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background: #151b29;
+            padding: 35px;
+            border-radius: 15px;
+            width: 300px;
+            border: 1px solid #252c3d;
+        }
+
+        .feature-card .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 80px 7%;
+            background: #111622;
+            text-align: center;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .step {
+            width: 220px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #d4af37;
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #999;
+            line-height: 1.5;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 90px 7%;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 7%;
+            text-align: center;
+            border-top: 1px solid #252c3d;
+            color: #777;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            nav a {
+                margin-left: 10px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 70px 6%;
+            }
+
+            .hero h1 {
+                font-size: 44px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .cta h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">TRIPAI</div>
+
+        <div>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Your Dubai trip.<br>
+                <span>Planned around you.</span>
+            </h1>
+
+            <p>
+                Discover personalized Dubai itineraries designed around
+                your interests, travel style and budget.
+            </p>
+
+            <a href="#planner" class="button">
+                Plan My Dubai Trip →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Features -->
+    <section class="features" id="features">
+
+        <h2>Travel planning, made personal.</h2>
+
+        <p class="section-subtitle">
+            Stop wasting hours comparing travel options.
+            Let TripAI help you build your ideal Dubai experience.
+        </p>
+
+        <div class="feature-container">
+
+            <div class="feature-card">
+                <div class="icon">🤖</div>
+                <h3>Personalized Planning</h3>
+                <p>
+                    Create a trip based on your interests,
+                    travel style and preferences.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon">💰</div>
+                <h3>Budget Friendly</h3>
+                <p>
+                    Build an experience that fits your
+                    budget without unnecessary spending.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon">✈️</div>
+                <h3>Complete Itinerary</h3>
+                <p>
+                    Get activities, places, food and
+                    daily plans organized in one place.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how">
+
+        <h2>How it works</h2>
+
+        <p class="section-subtitle">
+            Your personalized Dubai adventure in three simple steps.
+        </p>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Tell us about you</h3>
+                <p>
+                    Choose your budget, trip duration
+                    and interests.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>We plan your trip</h3>
+                <p>
+                    Our AI-powered concept creates
+                    a personalized itinerary.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Enjoy Dubai</h3>
+                <p>
+                    Follow your itinerary and
+                    experience Dubai your way.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="cta" id="planner">
+
+        <h2>Ready to explore Dubai?</h2>
+
+        <p>
+            Build a trip designed around your budget and interests.
+        </p>
+
+        <a href="#" class="button">
+            Start Planning →
+        </a>
+
+    </section>
+
+
+    <!-- About -->
+    <section class="features" id="about">
+
+        <h2>Why TripAI?</h2>
+
+        <p class="section-subtitle">
+            Traditional travel packages can be rigid, while planning
+            everything yourself can take hours. TripAI is designed
+            to bring personalization and simplicity together.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        © 2026 TripAI — AI-Powered Dubai Travel Planning
+    </footer>
+
+</body>
+</html>
