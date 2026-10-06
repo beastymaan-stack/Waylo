@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 190">
+  <defs>
+    <linearGradient id="waylo" x1="0" y1="0" x2="1" y2="0.8">
+      <stop offset="0" stop-color="#0B6F63"/>
+      <stop offset="0.52" stop-color="#78D48B"/>
+      <stop offset="1" stop-color="#19A47D"/>
+    </linearGradient>
+  </defs>
+  <path d="M42 38 C65 33 83 42 91 62 L125 143 C130 155 144 158 153 147 L229 48 C242 31 270 33 279 53 L321 137 C328 151 345 153 354 140 L390 87 C401 71 424 72 434 87 L450 111 L411 153 C391 175 355 170 342 143 L305 68 L181 151 C153 170 119 159 107 130 L70 48 C65 37 53 33 42 38Z" fill="url(#waylo)"/>
+  <path d="M397 35 C397 15 413 0 433 0 C453 0 469 15 469 35 C469 61 433 95 433 95 C433 95 397 61 397 35Z" fill="#F5A623"/>
+  <circle cx="433" cy="35" r="11" fill="#FFFDF5"/>
+  <text x="260" y="151" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="700" fill="#064E49">Waylo</text>
+  <text x="260" y="181" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="7" fill="#064E49">TRIPS THAT FIT YOU</text>
+</svg>
