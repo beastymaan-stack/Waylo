@@ -10,10 +10,10 @@
 <body>
 <nav><div class="logo"><img src="waylo-logo.svg" alt="Waylo"></div><a href="index.html">← Back to home</a></nav>
 <main class="wrap">
-<section class="intro"><div class="eyebrow">Build your trip</div><h1>Let's plan your Dubai experience.</h1><p>Tell Waylo what matters to you. Your answers will change the itinerary, activities and budget shown next.</p></section>
+<section class="intro"><div class="eyebrow">Build your trip</div><h1>Let's plan your Dubai experience.</h1><p>Tell Waylo what matters to you. Your answers will directly shape the number of days, activities and budget shown next.</p></section>
 <div class="progress"><span class="dot active"></span><span class="dot active"></span><span class="dot"></span></div>
 <section class="card">
-<div class="question"><h2>How long are you staying?</h2><div class="options" id="days"><button class="option" data-value="3">3 Days</button><button class="option" data-value="4">4 Days</button><button class="option selected" data-value="5">5 Days</button><button class="option" data-value="7">7 Days</button></div></div>
+<div class="question"><h2>How long are you staying?</h2><div class="options" id="days"><button class="option selected" data-value="3">3 Days</button><button class="option" data-value="4">4 Days</button><button class="option" data-value="5">5 Days</button><button class="option" data-value="7">7 Days</button></div></div>
 <div class="question"><h2>What's your travel budget?</h2><input class="budget" type="range" min="50000" max="200000" step="5000" value="85000" id="budget"><div class="budget-value" id="budgetValue">₹85,000</div><div class="budget-labels"><span>₹50K</span><span>₹2L+</span></div></div>
 <div class="question"><h2>Who are you travelling with?</h2><div class="options" id="group"><button class="option" data-value="Solo">Solo</button><button class="option" data-value="Couple">Couple</button><button class="option selected" data-value="Friends">Friends</button><button class="option" data-value="Family">Family</button></div></div>
 <div class="question"><h2>What are you interested in?</h2><div class="interests" id="interests">
@@ -33,8 +33,10 @@ document.getElementById('create').addEventListener('click',()=>{
  const group=document.querySelector('#group .selected').dataset.value;
  const interests=[...selected].map(x=>x.dataset.value).join(',');
  const params=new URLSearchParams({days,budget:budget.value,group,interests});
+ const trip={days:Number(days),budget:Number(budget.value),group,interests};
+ localStorage.setItem('wayloTrip',JSON.stringify(trip));
  document.getElementById('loading').style.display='flex';
- setTimeout(()=>location.href='itinerary.html?'+params.toString(),900);
+ setTimeout(()=>location.href='itinerary.html?'+params.toString()+'&v='+Date.now(),900);
 });
 </script>
 </body></html>
